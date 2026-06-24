@@ -568,6 +568,10 @@ const stepLabels = ['Step 1 of 3', 'Step 2 of 3', 'Step 3 of 3'];
 function showStep(n, dir) {
   if (animating || n === current) return;
   animating = true;
+
+  /* Blur focused element FIRST — stops browser auto-scrolling to clicked button */
+  if (document.activeElement) document.activeElement.blur();
+
   const from = steps[current];
   const to   = steps[n];
 
@@ -591,9 +595,11 @@ function showStep(n, dir) {
   setTimeout(() => {
     to.classList.remove('anim-in-right','anim-in-left');
     animating = false;
+    /* Scroll after animation ends so nothing overrides it */
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
   }, 240);
-
-  window.scrollTo({top:0,behavior:'instant'});
 }
 
 /* ── Mandatory validation ── */
