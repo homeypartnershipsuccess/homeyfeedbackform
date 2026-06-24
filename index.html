@@ -225,6 +225,14 @@ body.storming { animation: darkStorm 0.5s ease forwards; }
 .step-nav{display:flex;align-items:center;gap:10px;margin-top:22px;}
 .step-nav .btn{flex:1;}
 
+/* ── Validation ── */
+.field-error input,.field-error textarea,.field-error select{border-color:#ff6b8a!important;background:rgba(255,107,138,.08)!important;box-shadow:0 0 0 3px rgba(255,107,138,.2)!important;}
+.field-error .slider-wrap{outline:2px solid #ff6b8a;outline-offset:4px;border-radius:12px;}
+.error-msg{color:#ff8fab;font-size:12px;margin-top:5px;display:none;}
+.field-error .error-msg{display:block;}
+@keyframes fieldShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+.field-error{animation:fieldShake .35s ease;}
+
 /* ── Thank you ── */
 .thankyou{text-align:center;padding:28px 12px;}
 .thankyou .ty-emoji{font-size:72px;display:block;animation:tyBounce .7s .05s cubic-bezier(.34,1.56,.64,1) both;}
@@ -370,6 +378,7 @@ body.submitted { animation: submitBg 3.5s ease forwards; }
           <div class="field" style="margin-bottom:16px">
             <label for="q1_name">Name &amp; Agency</label>
             <input type="text" id="q1_name" placeholder="Full name &amp; agency name"/>
+            <span class="error-msg">Please enter your name and agency.</span>
           </div>
           <div class="field">
             <label for="q3_duration">How long have you been working with Homey?</label>
@@ -381,6 +390,7 @@ body.submitted { animation: submitBg 3.5s ease forwards; }
               <option>1–2 years</option>
               <option>2+ years</option>
             </select>
+            <span class="error-msg">Please select how long you've worked with Homey.</span>
           </div>
           <div class="step-nav">
             <button type="button" class="btn" data-next>Next</button>
@@ -394,34 +404,39 @@ body.submitted { animation: submitBg 3.5s ease forwards; }
             <label>How would you rate the speed of our conveyancing?</label>
             <div class="slider-wrap">
               <div class="sval"><b id="v_q6">3</b><small>/5</small></div>
-              <input type="range" id="q6_speed" class="srange" min="1" max="5" step="1" value="3"/>
+              <input type="range" id="q6_speed" class="srange" min="1" max="5" step="1" value="3" data-slider-required/>
             </div>
             <div class="scale-hint"><span>Slow</span><span>Very fast</span></div>
+            <span class="error-msg">Please move the slider to rate this.</span>
           </div>
           <div class="field">
             <label>How effectively do we handle complications or unexpected issues?</label>
             <div class="slider-wrap">
               <div class="sval"><b id="v_q9">3</b><small>/5</small></div>
-              <input type="range" id="q9_issues" class="srange" min="1" max="5" step="1" value="3"/>
+              <input type="range" id="q9_issues" class="srange" min="1" max="5" step="1" value="3" data-slider-required/>
             </div>
             <div class="scale-hint"><span>Poorly</span><span>Very well</span></div>
+            <span class="error-msg">Please move the slider to rate this.</span>
           </div>
           <div class="field">
             <label>How confident are you that your clients feel supported and looked after throughout their conveyancing journey with us?</label>
             <div class="slider-wrap">
               <div class="sval"><b id="v_qcc">3</b><small>/5</small></div>
-              <input type="range" id="q_confidence" class="srange" min="1" max="5" step="1" value="3"/>
+              <input type="range" id="q_confidence" class="srange" min="1" max="5" step="1" value="3" data-slider-required/>
             </div>
             <div class="scale-hint"><span>Not confident</span><span>Very confident</span></div>
+            <span class="error-msg">Please move the slider to rate this.</span>
           </div>
 
           <div class="field">
             <label for="q10_improve">What's the one thing we could improve most in conveyancing?</label>
             <textarea id="q10_improve" placeholder="Even small changes make a big difference…"></textarea>
+            <span class="error-msg">Please share what we could improve.</span>
           </div>
           <div class="field">
             <label for="q_conv_feedback">Are there any recurring issues or delays you have noticed with our conveyancing service that you would like us to address?</label>
             <textarea id="q_conv_feedback" placeholder="Any patterns or specific issues you've noticed…"></textarea>
+            <span class="error-msg">Please share any feedback on our conveyancing service.</span>
           </div>
           <div class="step-nav">
             <button type="button" class="btn-back" data-back title="Back">&#8592;</button>
@@ -436,39 +451,44 @@ body.submitted { animation: submitBg 3.5s ease forwards; }
             <label>How well are we supporting you as your Account Managers day to day?</label>
             <div class="slider-wrap">
               <div class="sval"><b id="v_q4">3</b><small>/5</small></div>
-              <input type="range" id="q4_support" class="srange" min="1" max="5" step="1" value="3"/>
+              <input type="range" id="q4_support" class="srange" min="1" max="5" step="1" value="3" data-slider-required/>
             </div>
             <div class="scale-hint"><span>Poor</span><span>Excellent</span></div>
+            <span class="error-msg">Please move the slider to rate this.</span>
           </div>
           <div class="field">
             <label>How likely are you to continue referring clients to Homey?</label>
             <div class="slider-wrap">
               <div class="sval"><b id="v_q5">3</b><small>/5</small></div>
-              <input type="range" id="q5_nps" class="srange" min="1" max="5" step="1" value="3"/>
+              <input type="range" id="q5_nps" class="srange" min="1" max="5" step="1" value="3" data-slider-required/>
             </div>
             <div class="scale-hint"><span>Not likely</span><span>Definitely</span></div>
+            <span class="error-msg">Please move the slider to rate this.</span>
           </div>
 
           <div class="field">
             <label>How likely are you to recommend partnering with us to another agent or business?</label>
             <div class="slider-wrap">
               <div class="sval"><b id="v_qrec">3</b><small>/5</small></div>
-              <input type="range" id="q_recommend" class="srange" min="1" max="5" step="1" value="3"/>
+              <input type="range" id="q_recommend" class="srange" min="1" max="5" step="1" value="3" data-slider-required/>
             </div>
             <div class="scale-hint"><span>Not likely</span><span>Definitely</span></div>
+            <span class="error-msg">Please move the slider to rate this.</span>
           </div>
 
           <div class="field">
             <label>When you need us, how responsive do we feel?</label>
             <div class="slider-wrap">
               <div class="sval"><b id="v_q_resp">3</b><small>/5</small></div>
-              <input type="range" id="q_resp" class="srange" min="1" max="5" step="1" value="3"/>
+              <input type="range" id="q_resp" class="srange" min="1" max="5" step="1" value="3" data-slider-required/>
             </div>
             <div class="scale-hint"><span>Hard to reach</span><span>Always there</span></div>
+            <span class="error-msg">Please move the slider to rate this.</span>
           </div>
           <div class="field">
             <label for="q_partner_open">What's one thing we're doing well, and one thing you'd like us to do differently?</label>
             <textarea id="q_partner_open" placeholder="One thing going well… and one to improve…"></textarea>
+            <span class="error-msg">Please share what's going well and what to improve.</span>
           </div>
           <div class="step-nav">
             <button type="button" class="btn-back" data-back title="Back">&#8592;</button>
@@ -571,16 +591,126 @@ function showStep(n, dir) {
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
+/* ── Mandatory validation ── */
+
+// Track slider touches via both input and change events
+const touched = {};
+document.querySelectorAll('[data-slider-required]').forEach(sl => {
+  touched[sl.id] = false;
+  ['input','change','mouseup','touchend'].forEach(ev =>
+    sl.addEventListener(ev, () => { touched[sl.id] = true; checkStep(); })
+  );
+});
+
+// Definition of what each step requires
+const STEP_FIELDS = {
+  0: { text: ['q1_name'], select: ['q3_duration'], sliders: [] },
+  1: { text: ['q10_improve','q_conv_feedback'], select: [], sliders: ['q6_speed','q9_issues','q_confidence'] },
+  2: { text: ['q_partner_open'], select: [], sliders: ['q4_support','q5_nps','q_recommend','q_resp'] },
+};
+
+function stepIsComplete(idx) {
+  const def = STEP_FIELDS[idx];
+  if (!def) return true;
+  for (const id of def.text)    { const v = document.getElementById(id).value.trim(); if (!v) return false; }
+  for (const id of def.select)  { const v = document.getElementById(id).value;        if (!v) return false; }
+  for (const id of def.sliders) { if (!touched[id]) return false; }
+  return true;
+}
+
+function markError(el) {
+  const f = el.closest('.field');
+  f.classList.add('field-error');
+  f.style.animation = 'none';
+  void f.offsetWidth;
+  f.style.animation = '';
+}
+
+function checkStep() {
+  // Enable/disable Next and Submit buttons based on completion
+  steps.forEach((step, idx) => {
+    const nextBtn = step.querySelector('[data-next]');
+    const subBtn  = step.querySelector('[type=submit]');
+    const done    = stepIsComplete(idx);
+    if (nextBtn) { nextBtn.disabled = !done; nextBtn.style.opacity = done ? '1' : '0.45'; }
+    if (subBtn)  { subBtn.disabled  = !done; subBtn.style.opacity  = done ? '1' : '0.45'; }
+  });
+}
+
+// Listen for changes on all text/select fields
+Object.values(STEP_FIELDS).forEach(def => {
+  [...def.text, ...def.select].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    ['input','change'].forEach(ev => el.addEventListener(ev, () => {
+      el.closest('.field').classList.remove('field-error');
+      checkStep();
+    }));
+  });
+});
+
+// Run on load to set initial button states
+checkStep();
+
+function validateAndShowErrors(idx) {
+  const def = STEP_FIELDS[idx] || {};
+  let ok = true;
+  [...(def.text||[]), ...(def.select||[])].forEach(id => {
+    const el = document.getElementById(id);
+    const empty = el.tagName === 'SELECT' ? !el.value : !el.value.trim();
+    if (empty) { markError(el); ok = false; }
+    else { el.closest('.field').classList.remove('field-error'); }
+  });
+  (def.sliders||[]).forEach(id => {
+    const el = document.getElementById(id);
+    if (!touched[id]) { markError(el); ok = false; }
+    else { el.closest('.field').classList.remove('field-error'); }
+  });
+  return ok;
+}
+
 document.querySelectorAll('[data-next]').forEach(b =>
-  b.addEventListener('click', () => { if (current < steps.length-1) showStep(current+1, 1); })
+  b.addEventListener('click', () => {
+    if (!validateAndShowErrors(current)) return;
+    if (current < steps.length - 1) showStep(current + 1, 1);
+  })
 );
 document.querySelectorAll('[data-back]').forEach(b =>
-  b.addEventListener('click', () => { if (current > 0) showStep(current-1, -1); })
+  b.addEventListener('click', () => { if (current > 0) showStep(current - 1, -1); })
 );
 
 /* ── Submit ── */
+// ── Google Sheets endpoint — paste your deployed Apps Script URL here ──
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxgucADr5_XVtWNN-0fAexyT6mGk-_C70zOyNhcvea1gEv_PC6eUHRmVLkv5mLb--3M/exec';
+
 document.getElementById('feedbackForm').addEventListener('submit', e => {
   e.preventDefault();
+  if (!validateAndShowErrors(current)) return;
+
+  // Collect all answers
+  const data = {
+    timestamp:          new Date().toISOString(),
+    name_agency:        document.getElementById('q1_name').value.trim(),
+    tenure:             document.getElementById('q3_duration').value,
+    conv_speed:         document.getElementById('q6_speed').value,
+    conv_issues:        document.getElementById('q9_issues').value,
+    conv_confidence:    document.getElementById('q_confidence').value,
+    conv_improve:       document.getElementById('q10_improve').value.trim(),
+    conv_feedback:      document.getElementById('q_conv_feedback').value.trim(),
+    partner_support:    document.getElementById('q4_support').value,
+    partner_nps:        document.getElementById('q5_nps').value,
+    partner_recommend:  document.getElementById('q_recommend').value,
+    partner_responsive: document.getElementById('q_resp').value,
+    partner_open:       document.getElementById('q_partner_open').value.trim(),
+  };
+
+  // Submit to Google Sheets via GET (avoids CORS preflight entirely)
+  if (SHEET_URL !== 'YOUR_APPS_SCRIPT_URL') {
+    const params = new URLSearchParams(data).toString();
+    fetch(SHEET_URL + '?' + params, { mode: 'no-cors' }).catch(() => {});
+  }
+
+  // Show celebration regardless
   document.body.classList.add('submitted');
   const card = document.querySelector('.card');
   card.classList.add('celebrating');
