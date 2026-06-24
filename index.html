@@ -232,6 +232,11 @@ body.storming { animation: darkStorm 0.5s ease forwards; }
 .field-error .error-msg{display:block;}
 @keyframes fieldShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
 .field-error{animation:fieldShake .35s ease;}
+/* Required asterisk on every label */
+.field label::after{content:' *';color:rgba(255,107,138,.5);font-size:10px;vertical-align:super;font-weight:400;}
+/* Per-question "Required" badge */
+.req-badge{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:999px;margin-left:8px;vertical-align:middle;background:rgba(255,107,138,.2);color:#ff8fab;transition:opacity .25s,background .25s;letter-spacing:.2px;white-space:nowrap;}
+.req-badge.answered{opacity:0;pointer-events:none;}
 
 /* ── Thank you ── */
 .thankyou{text-align:center;padding:28px 12px;}
@@ -305,7 +310,7 @@ body.submitted { animation: submitBg 3.5s ease forwards; }
 /* Mobile (up to 480px) */
 @media (max-width:480px) {
   body { padding:0; align-items:flex-start; }
-  .wrap { max-width:100%; height:100%; }
+  .wrap { max-width:100%; min-height:100%; }
   .card {
     padding:24px 18px 32px;
     border-radius:0;
@@ -626,6 +631,21 @@ function markError(el) {
   f.style.animation = '';
 }
 
+function updateBadges() {
+  Object.values(STEP_FIELDS).forEach(def => {
+    [...def.text, ...def.select].forEach(id => {
+      const el = document.getElementById(id);
+      const badge = document.querySelector('.req-badge[data-for="'+id+'"]');
+      if (!badge || !el) return;
+      const answered = el.tagName === 'SELECT' ? !!el.value : !!el.value.trim();
+      badge.classList.toggle('answered', answered);
+    });
+    def.sliders.forEach(id => {
+      const badge = document.querySelector('.req-badge[data-for="'+id+'"]');
+      if (badge) badge.classList.toggle('answered', !!touched[id]);
+    });
+  });
+}
 function checkStep() {
   // Enable/disable Next and Submit buttons based on completion
   steps.forEach((step, idx) => {
@@ -635,6 +655,7 @@ function checkStep() {
     if (nextBtn) { nextBtn.disabled = !done; nextBtn.style.opacity = done ? '1' : '0.45'; }
     if (subBtn)  { subBtn.disabled  = !done; subBtn.style.opacity  = done ? '1' : '0.45'; }
   });
+  updateBadges();
 }
 
 // Listen for changes on all text/select fields
@@ -652,6 +673,27 @@ Object.values(STEP_FIELDS).forEach(def => {
 // Run on load to set initial button states
 checkStep();
 
+// Add Required badges to all required field labels
+(function initRequiredBadges() {
+  const allText    = Object.values(STEP_FIELDS).flatMap(d => d.text);
+  const allSelect  = Object.values(STEP_FIELDS).flatMap(d => d.select);
+  const allSliders = Object.values(STEP_FIELDS).flatMap(d => d.sliders);
+  [...allText, ...allSelect, ...allSliders].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const field = el.closest('.field');
+    if (!field) return;
+    const label = field.querySelector('label');
+    if (!label) return;
+    const badge = document.createElement('span');
+    badge.className = 'req-badge';
+    badge.setAttribute('data-for', id);
+    badge.textContent = 'Required';
+    label.appendChild(badge);
+  });
+  updateBadges();
+})();
+
 function validateAndShowErrors(idx) {
   const def = STEP_FIELDS[idx] || {};
   let ok = true;
@@ -666,6 +708,10 @@ function validateAndShowErrors(idx) {
     if (!touched[id]) { markError(el); ok = false; }
     else { el.closest('.field').classList.remove('field-error'); }
   });
+  if (!ok) {
+    const firstErr = document.querySelector('.step.active .field-error');
+    if (firstErr) setTimeout(() => firstErr.scrollIntoView({behavior:'smooth',block:'center'}), 60);
+  }
   return ok;
 }
 
